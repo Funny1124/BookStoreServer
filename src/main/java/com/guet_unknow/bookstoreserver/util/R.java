@@ -41,10 +41,10 @@ public class R implements Serializable {
      *
      * @return R
      */
-    public static R ok() {
+    public static R success() {
         R r = new R();
         r.code = 200;
-        r.message = "OK";
+        r.message = "success";
         return r;
     }
 
@@ -53,10 +53,10 @@ public class R implements Serializable {
      *
      * @return R
      */
-    public static R fail() {
+    public static R failure() {
         R r = new R();
         r.code = 401;
-        r.message = "fail";
+        r.message = "failure";
         return r;
     }
 
