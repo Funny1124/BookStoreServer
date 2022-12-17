@@ -32,6 +32,14 @@ public interface BooksMapper {
     List<Books> queryByType(Long bookTypeId);
 
     /**
+     * 通过ID查询单条数据
+     *
+     * @param keyWork 主键
+     * @return 实例对象
+     */
+    List<Books> queryByKeyWork(String keyWork);
+
+    /**
      * 查询所有
      *
      * @return 对象列表

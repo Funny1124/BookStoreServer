@@ -92,7 +92,17 @@
     <select id="queryByType" resultMap="BooksMap">
         select * from books where book_type_id = #{bookTypeId}
     </select>
-
+    <select id="queryByKeyWork" resultMap="BooksMap">
+        select *
+        from books
+        <where>
+            <if test="keyWork != null and keyWork != ''">
+                <bind name="likeName" value=" '%' + keyWork +'%' "/>
+                AND book_name like #{likeName}
+            </if>
+        </where>
+    </select>
+<!--    where book_name like concat('%', #{keyWork}, '%')-->
     <!--新增所有列-->
     <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
         insert into books(book_type_id, book_name, book_author, book_cover, book_desc, book_price, book_status,

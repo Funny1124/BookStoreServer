@@ -50,6 +50,13 @@ public class BooksServiceImpl implements BooksService {
     }
 
     @Override
+    public R queryByKeyWork(String keyWork) {
+        if (keyWork.equals(" ") || keyWork.equals(""))
+            return R.failure().setData("关键词不能为空");
+        return R.success().setData(this.booksMapper.queryByKeyWork(keyWork));
+    }
+
+    @Override
     public R queryByBookTypeId(Long bookTypeId) {
         return R.success().setData(this.booksMapper.queryByType(bookTypeId));
     }

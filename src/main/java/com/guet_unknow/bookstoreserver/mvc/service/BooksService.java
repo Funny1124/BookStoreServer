@@ -29,6 +29,14 @@ public interface BooksService {
     R queryById(Long bookId);
 
     /**
+     * 通过keyWork查询
+     *
+     * @param keyWork 关键词
+     * @return 实例对象
+     */
+    R queryByKeyWork(String keyWork);
+
+    /**
      * 通过ID查询单条数据
      *
      * @param bookTypeId 主键

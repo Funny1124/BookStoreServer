@@ -54,9 +54,10 @@ public class BooksController {
 
     @ApiOperation("按类型分页查询")
     @GetMapping(value = "queryTypeByPage")
-    public R queryTypeByPage(@ApiParam(value = "页码") int pageNum, @ApiParam(value = "页面大小") int pageSize,@ApiParam(value = "类型id")Long bookTypeId ) {
-        return this.booksService.queryTypeByPage(pageNum, pageSize,bookTypeId);
+    public R queryTypeByPage(@ApiParam(value = "页码") int pageNum, @ApiParam(value = "页面大小") int pageSize, @ApiParam(value = "类型id") Long bookTypeId) {
+        return this.booksService.queryTypeByPage(pageNum, pageSize, bookTypeId);
     }
+
     /**
      * 通过主键查询单条数据
      *
@@ -70,6 +71,18 @@ public class BooksController {
     }
 
     /**
+     * 通过关键词查询
+     *
+     * @param keyWork 关键词
+     * @return 数据列表
+     */
+    @ApiOperation("通过关键词查询")
+    @GetMapping(value = "queryByKeyWork")
+    public R queryByKeyWork(@ApiParam(value = "keyWork 关键词") @RequestParam("keyWork") String keyWork) {
+        return this.booksService.queryByKeyWork(keyWork);
+    }
+
+    /**
      * 通过主键查询数据
      *
      * @param bookTypeId 主键
@@ -80,6 +93,7 @@ public class BooksController {
     public R queryByType(@ApiParam(value = "bookTypeId 主键") @RequestParam("bookTypeId") Long bookTypeId) {
         return this.booksService.queryByBookTypeId(bookTypeId);
     }
+
     /**
      * 新增数据
      *
