@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknow.bookstoreserver.mvc.mapper.BooksMapper">
+
+    <resultMap type="com.guet_unknow.bookstoreserver.mvc.domain.Books" id="BooksMap">
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="bookTypeId" column="book_type_id" jdbcType="INTEGER"/>
+        <result property="bookName" column="book_name" jdbcType="VARCHAR"/>
+        <result property="bookAuthor" column="book_author" jdbcType="VARCHAR"/>
+        <result property="bookCover" column="book_cover" jdbcType="VARCHAR"/>
+        <result property="bookDesc" column="book_desc" jdbcType="VARCHAR"/>
+        <result property="bookPrice" column="book_price" jdbcType="NUMERIC"/>
+        <result property="bookStatus" column="book_status" jdbcType="INTEGER"/>
+        <result property="bookDeleteFlag" column="book_delete_flag" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isNew" column="is_new" jdbcType="INTEGER"/>
+        <result property="isRm" column="is_rm" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BooksMap">
+        select book_id,
+               book_type_id,
+               book_name,
+               book_author,
+               book_cover,
+               book_desc,
+               book_price,
+               book_status,
+               book_delete_flag,
+               create_time,
+               update_time,
+               is_new,
+               is_rm
+        from books
+        where book_id = #{bookId}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="BooksMap">
+        select *
+        from books
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from books
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookTypeId != null">
+                and book_type_id = #{bookTypeId}
+            </if>
+            <if test="bookName != null and bookName != ''">
+                and book_name = #{bookName}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != ''">
+                and book_author = #{bookAuthor}
+            </if>
+            <if test="bookCover != null and bookCover != ''">
+                and book_cover = #{bookCover}
+            </if>
+            <if test="bookDesc != null and bookDesc != ''">
+                and book_desc = #{bookDesc}
+            </if>
+            <if test="bookPrice != null">
+                and book_price = #{bookPrice}
+            </if>
+            <if test="bookStatus != null">
+                and book_status = #{bookStatus}
+            </if>
+            <if test="bookDeleteFlag != null">
+                and book_delete_flag = #{bookDeleteFlag}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isNew != null">
+                and is_new = #{isNew}
+            </if>
+            <if test="isRm != null">
+                and is_rm = #{isRm}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
+        insert into books(book_type_id, book_name, book_author, book_cover, book_desc, book_price, book_status,
+                          book_delete_flag, create_time, update_time, is_new, is_rm)
+        values (#{bookTypeId}, #{bookName}, #{bookAuthor}, #{bookCover}, #{bookDesc}, #{bookPrice}, #{bookStatus},
+                #{bookDeleteFlag}, #{createTime}, #{updateTime}, #{isNew}, #{isRm})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into books(book_type_id, book_name, book_author, book_cover, book_desc, book_price, book_status,
+        book_delete_flag, create_time, update_time, is_new, is_rm)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bookTypeId}, #{entity.bookName}, #{entity.bookAuthor}, #{entity.bookCover}, #{entity.bookDesc},
+            #{entity.bookPrice}, #{entity.bookStatus}, #{entity.bookDeleteFlag}, #{entity.createTime},
+            #{entity.updateTime}, #{entity.isNew}, #{entity.isRm})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into books(book_type_id, book_name, book_author, book_cover, book_desc, book_price, book_status,
+        book_delete_flag, create_time, update_time, is_new, is_rm)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bookTypeId}, #{entity.bookName}, #{entity.bookAuthor}, #{entity.bookCover}, #{entity.bookDesc},
+            #{entity.bookPrice}, #{entity.bookStatus}, #{entity.bookDeleteFlag}, #{entity.createTime},
+            #{entity.updateTime}, #{entity.isNew}, #{entity.isRm})
+        </foreach>
+        on duplicate key update
+        book_type_id = values(book_type_id),
+        book_name = values(book_name),
+        book_author = values(book_author),
+        book_cover = values(book_cover),
+        book_desc = values(book_desc),
+        book_price = values(book_price),
+        book_status = values(book_status),
+        book_delete_flag = values(book_delete_flag),
+        create_time = values(create_time),
+        update_time = values(update_time),
+        is_new = values(is_new),
+        is_rm = values(is_rm)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update books
+        <set>
+            <if test="bookTypeId != null">
+                book_type_id = #{bookTypeId},
+            </if>
+            <if test="bookName != null and bookName != ''">
+                book_name = #{bookName},
+            </if>
+            <if test="bookAuthor != null and bookAuthor != ''">
+                book_author = #{bookAuthor},
+            </if>
+            <if test="bookCover != null and bookCover != ''">
+                book_cover = #{bookCover},
+            </if>
+            <if test="bookDesc != null and bookDesc != ''">
+                book_desc = #{bookDesc},
+            </if>
+            <if test="bookPrice != null">
+                book_price = #{bookPrice},
+            </if>
+            <if test="bookStatus != null">
+                book_status = #{bookStatus},
+            </if>
+            <if test="bookDeleteFlag != null">
+                book_delete_flag = #{bookDeleteFlag},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isNew != null">
+                is_new = #{isNew},
+            </if>
+            <if test="isRm != null">
+                is_rm = #{isRm},
+            </if>
+        </set>
+        where book_id = #{bookId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from books
+        where book_id = #{bookId}
+    </delete>
+
+</mapper>
+
+
+
