@@ -17,7 +17,7 @@ spring:
       # 下面为连接池的补充设置，应用到上面所有数据源中
       # 初始化大小，最小，最大
       initial-size: 3
-      min-idle: 1
+      min-idle: 3
       max-active: 10
       # 配置获取连接等待超时的时间
       max-wait: 60000
