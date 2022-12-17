@@ -29,6 +29,23 @@ public interface BooksService {
     R queryById(Long bookId);
 
     /**
+     * 通过ID查询单条数据
+     *
+     * @param bookTypeId 主键
+     * @return 实例对象
+     */
+    R queryByBookTypeId(Long bookTypeId);
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum  页码
+     * @param pageSize 页面大小
+     * @return 单条数据
+     */
+    R queryTypeByPage(int pageNum, int pageSize, Long bookTypeId);
+
+    /**
      * 查询所有
      *
      * @return 查询结果

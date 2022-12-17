@@ -49,6 +49,18 @@ public class BooksServiceImpl implements BooksService {
         return R.success().setData(this.booksMapper.queryById(bookId));
     }
 
+    @Override
+    public R queryByBookTypeId(Long bookTypeId) {
+        return R.success().setData(this.booksMapper.queryByType(bookTypeId));
+    }
+
+    @Override
+    public R queryTypeByPage(int pageNum, int pageSize, Long bookTypeId) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Books> lists = this.booksMapper.queryByType(bookTypeId);
+        return R.success().setData(new PageInfo<>(lists));
+    }
+
     /**
      * 查询所有
      *

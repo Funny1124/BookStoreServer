@@ -89,6 +89,9 @@
             </if>
         </where>
     </select>
+    <select id="queryByType" resultMap="BooksMap">
+        select * from books where book_type_id = #{bookTypeId}
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
