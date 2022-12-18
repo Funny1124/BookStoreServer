@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknow.bookstoreserver.mvc.mapper.RmBooksMapper">
+
+    <resultMap type="com.guet_unknow.bookstoreserver.mvc.domain.RmBooks" id="RmBooksMap">
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="bookTypeId" column="book_type_id" jdbcType="INTEGER"/>
+        <result property="bookName" column="book_name" jdbcType="VARCHAR"/>
+        <result property="bookAuthor" column="book_author" jdbcType="VARCHAR"/>
+        <result property="bookCover" column="book_cover" jdbcType="VARCHAR"/>
+        <result property="bookDesc" column="book_desc" jdbcType="VARCHAR"/>
+        <result property="bookPrice" column="book_price" jdbcType="NUMERIC"/>
+        <result property="bookStatus" column="book_status" jdbcType="INTEGER"/>
+        <result property="bookDeleteFlag" column="book_delete_flag" jdbcType="INTEGER"/>
+        <result property="isNew" column="is_new" jdbcType="INTEGER"/>
+        <result property="isRm" column="is_rm" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="RmBooksMap">
+        select *
+        from rm_books
+    </select>
+</mapper>
+
+
+
