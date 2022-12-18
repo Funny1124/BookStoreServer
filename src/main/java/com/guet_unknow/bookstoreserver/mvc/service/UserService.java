@@ -52,6 +52,15 @@ public interface UserService {
     R update(User user);
 
     /**
+     * 登录功能
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 实例对象User
+     */
+    R login(String username, String password);
+
+    /**
      * 通过主键删除数据
      *
      * @param userId 主键

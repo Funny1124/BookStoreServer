@@ -74,7 +74,23 @@ public class UserServiceImpl implements UserService {
         this.userMapper.insert(user);
         return R.success().setData(user);
     }
-
+    /**
+     * 登录功能
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 实例对象User
+     */
+    @Override
+    public R login(String username, String password){
+        User tempUser = this.userMapper.queryByUserName(username);
+        if (tempUser == null)
+            return R.failure().setData("不存在该用户，请确认用户名是否正确");
+        else if (!tempUser.getPassword().equals(password)) {
+            return R.failure().setData("密码错误");
+        }
+        return R.success().setData(tempUser);
+    }
     /**
      * 修改数据
      *

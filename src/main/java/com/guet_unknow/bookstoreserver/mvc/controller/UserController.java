@@ -77,6 +77,19 @@ public class UserController {
     }
 
     /**
+     * 用户登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 实例User
+     */
+    @ApiOperation("用户登录")
+    @PostMapping(value = "login")
+    public R login(@ApiParam(value = "用户名")String username, @ApiParam(value = "密码")String password) {
+        return this.userService.login(username, password);
+    }
+
+    /**
      * 更新数据
      *
      * @param user 实体
