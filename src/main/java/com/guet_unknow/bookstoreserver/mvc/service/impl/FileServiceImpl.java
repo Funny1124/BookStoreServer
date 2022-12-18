@@ -1,6 +1,7 @@
 package com.guet_unknow.bookstoreserver.mvc.service.impl;
 
 import com.guet_unknow.bookstoreserver.mvc.service.FileService;
+import com.guet_unknow.bookstoreserver.util.R;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,11 +28,10 @@ public class FileServiceImpl implements FileService {
     private final SimpleDateFormat simpleDateFormat =
             new SimpleDateFormat("_yyyyMMddHHmmssSSS");
 
-    public List<String> upload(MultipartFile[] files, Long uid) {
+    public R upload(MultipartFile[] files, Long uid) {
         List<String> list = new ArrayList<>();//将重命名的文件名保存，用于返回
         if (files.length == 0) {
-            list.add("文件获取失败，请确认是否已经选择文件");
-            return list;
+            return R.failure().setData("文件获取失败，请确认是否已经选择文件");
         }
         for (MultipartFile multipartFile : files) {
             String suffix = Objects.requireNonNull(
@@ -43,18 +43,16 @@ public class FileServiceImpl implements FileService {
             list.add(returnPath);
             if (!file.getParentFile().exists()) {
                 if (!file.getParentFile().mkdirs()) {
-                    list.add("创建文件夹失败");
-                    return list;
+                    return R.failure().setData("创建文件夹失败");
                 }
             }
             try {
                 multipartFile.transferTo(file);
             } catch (Exception e) {
                 e.printStackTrace();
-                list.add("从临时文件复制到目标位置出错");
-                return list;
+                return R.failure().setData("从临时文件复制到目标位置出错");
             }
         }
-        return list;
+        return R.success().setData(list);
     }
 }
