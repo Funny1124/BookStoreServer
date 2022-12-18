@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknown.bookstoreserver.mvc.mapper.CouponMapper">
+
+    <resultMap type="com.guet_unknown.bookstoreserver.mvc.domain.Coupon" id="CouponMap">
+        <result property="couponId" column="coupon_id" jdbcType="INTEGER"/>
+        <result property="couponImages" column="coupon_images" jdbcType="VARCHAR"/>
+        <result property="couponDesc" column="coupon_desc" jdbcType="VARCHAR"/>
+        <result property="couponValue" column="coupon_value" jdbcType="NUMERIC"/>
+        <result property="couponAvailable" column="coupon_available" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CouponMap">
+        select coupon_id,
+               coupon_images,
+               coupon_desc,
+               coupon_value,
+               coupon_available,
+               create_time,
+               update_time
+        from coupon
+        where coupon_id = #{couponId}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="CouponMap">
+        select *
+        from coupon
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from coupon
+        <where>
+            <if test="couponId != null">
+                and coupon_id = #{couponId}
+            </if>
+            <if test="couponImages != null and couponImages != ''">
+                and coupon_images = #{couponImages}
+            </if>
+            <if test="couponDesc != null and couponDesc != ''">
+                and coupon_desc = #{couponDesc}
+            </if>
+            <if test="couponValue != null">
+                and coupon_value = #{couponValue}
+            </if>
+            <if test="couponAvailable != null">
+                and coupon_available = #{couponAvailable}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="couponId" useGeneratedKeys="true">
+        insert into coupon(coupon_images, coupon_desc, coupon_value, coupon_available, create_time, update_time)
+        values (#{couponImages}, #{couponDesc}, #{couponValue}, #{couponAvailable}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="couponId" useGeneratedKeys="true">
+        insert into coupon(coupon_images, coupon_desc, coupon_value, coupon_available, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.couponImages}, #{entity.couponDesc}, #{entity.couponValue}, #{entity.couponAvailable},
+            #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="couponId" useGeneratedKeys="true">
+        insert into coupon(coupon_images, coupon_desc, coupon_value, coupon_available, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.couponImages}, #{entity.couponDesc}, #{entity.couponValue}, #{entity.couponAvailable},
+            #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        coupon_images = values(coupon_images),
+        coupon_desc = values(coupon_desc),
+        coupon_value = values(coupon_value),
+        coupon_available = values(coupon_available),
+        create_time = values(create_time),
+        update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update coupon
+        <set>
+            <if test="couponImages != null and couponImages != ''">
+                coupon_images = #{couponImages},
+            </if>
+            <if test="couponDesc != null and couponDesc != ''">
+                coupon_desc = #{couponDesc},
+            </if>
+            <if test="couponValue != null">
+                coupon_value = #{couponValue},
+            </if>
+            <if test="couponAvailable != null">
+                coupon_available = #{couponAvailable},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where coupon_id = #{couponId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from coupon
+        where coupon_id = #{couponId}
+    </delete>
+
+</mapper>
+
+
+
