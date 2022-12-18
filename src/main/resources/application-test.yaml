@@ -8,6 +8,10 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -41,5 +45,9 @@ mybatis:
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-
+#文件上传
+filepath:
+  dir: D:\bookstore\    #文件保存地址
+  setResourceHandler: /files/**  #设置访问前缀
+  trueResourceHandler: /files/  #真实访问前缀，如：http://127.0.0.1:8080/files/15_20221218172353837.png
 

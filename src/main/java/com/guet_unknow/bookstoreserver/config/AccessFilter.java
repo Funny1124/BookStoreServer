@@ -1,9 +1,12 @@
 package com.guet_unknow.bookstoreserver.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +21,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Configuration
-public class AccessFilter implements Filter {
+public class AccessFilter implements Filter, WebMvcConfigurer {
     @Override
     public void init(FilterConfig filterConfig) {
 
@@ -44,4 +47,15 @@ public class AccessFilter implements Filter {
     public void destroy() {
 
     }
+
+    @Value("${filepath.dir}")
+    String filePath;
+    @Value("${filepath.setResourceHandler}")
+    String setResourceHandler;
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //其中addResourceHandler表示访问的前缀。addResourceLocations 是文件真实的存储路径
+        registry.addResourceHandler(setResourceHandler).addResourceLocations("file:"+filePath);
+    }
+
 }
