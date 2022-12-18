@@ -8,6 +8,10 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -16,9 +20,9 @@ spring:
     druid:
       # 下面为连接池的补充设置，应用到上面所有数据源中
       # 初始化大小，最小，最大
-      initial-size: 15
-      min-idle: 8
-      max-active: 30
+      initial-size: 3
+      min-idle: 5
+      max-active: 10
       # 配置获取连接等待超时的时间
       max-wait: 60000
       # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
@@ -29,9 +33,9 @@ spring:
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 60
       validation-query: SELECT 1 FROM DUAL
-      url: jdbc:mysql://localhost:3306/study_space
-      username: root
-      password: root
+      url: jdbc:mysql://43.139.97.111:3306/bookstore
+      username: admin
+      password: Admin@1124.
       driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
@@ -40,4 +44,10 @@ mybatis:
     # call-setters-on-nulls 参数的作用是查询的某一行某一列为null，是否返回
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#文件上传
+filepath:
+  dir: /usr/BookstoreServer/files/   #文件保存地址
+  setResourceHandler: /files/**  #设置访问前缀
+  trueResourceHandler: /files/  #真实访问前缀，如：http://127.0.0.1:8080/files/15_20221218172353837.png
 
