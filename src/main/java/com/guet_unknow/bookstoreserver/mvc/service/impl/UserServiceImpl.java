@@ -67,9 +67,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public R insert(User user) {
-        User user1 = this.userMapper.queryByUserName(user.getUserName());
-
-        if (user1 != null)
+        User tempUser = this.userMapper.queryByUserName(user.getUserName());
+        if (tempUser != null)
             return R.failure().setData("该用户名已存在");
 
         this.userMapper.insert(user);
@@ -84,8 +83,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public R update(User user) {
+        User tempUser = this.userMapper.queryByUserName(user.getUserName());
+        if ( tempUser != null && !tempUser.getUserId().equals(user.getUserId()))
+            return R.failure().setData("该用户名已存在");
+
         this.userMapper.update(user);
-        return R.success().setData(this.queryById(user.getUserId()));
+        return R.success().setData(this.userMapper.queryById(user.getUserId()));
     }
 
     /**
