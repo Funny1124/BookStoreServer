@@ -14,7 +14,7 @@ import java.util.Date;
  * (CartItem)实体类
  *
  * @author cyan
- * @since 2022-12-19 16:54:22
+ * @since 2022-12-19 18:44:05
  */
 @Slf4j
 @Data
@@ -22,7 +22,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ApiModel("(CartItem)实体类")
 public class CartItem implements Serializable {
-    private static final long serialVersionUID = 906686271986135035L;
+    private static final long serialVersionUID = 562277740593296521L;
     @ApiModelProperty(value = "")
     private Long cartItemId;
     /**
@@ -46,9 +46,11 @@ public class CartItem implements Serializable {
     @ApiModelProperty(value = "是否选中")
     private Integer cartItemStatus;
     @ApiModelProperty(value = "")
+    private Integer deleteFlag;
+    @ApiModelProperty(value = "")
     private Date createTime;
     @ApiModelProperty(value = "")
-    private Date updataTime;
+    private Date updateTime;
 }
 
 

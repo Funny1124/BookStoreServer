@@ -8,8 +8,9 @@
         <result property="bookId" column="book_id" jdbcType="INTEGER"/>
         <result property="bookNumber" column="book_number" jdbcType="INTEGER"/>
         <result property="cartItemStatus" column="cart_item_status" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updataTime" column="updata_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!--查询单个-->
@@ -19,10 +20,17 @@
                book_id,
                book_number,
                cart_item_status,
+               delete_flag,
                create_time,
-               updata_time
+               update_time
         from cart_item
         where cart_item_id = #{cartItemId}
+    </select>
+
+    <select id="queryByUserId" resultMap="CartItemMap">
+        select *
+        from cart_item
+        where user_id = #{userId}
     </select>
 
     <!--查询所有-->
@@ -51,49 +59,48 @@
             <if test="cartItemStatus != null">
                 and cart_item_status = #{cartItemStatus}
             </if>
+            <if test="deleteFlag != null">
+                and delete_flag = #{deleteFlag}
+            </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
             </if>
-            <if test="updataTime != null">
-                and updata_time = #{updataTime}
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
             </if>
         </where>
-    </select>
-    <select id="queryByUserId" resultMap="CartItemMap">
-        select *
-        from cart_item
-        where user_id = #{userId}
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="cartItemId" useGeneratedKeys="true">
-        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
-        values (#{userId}, #{bookId}, #{bookNumber}, #{cartItemStatus}, #{createTime}, #{updataTime})
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, delete_flag, create_time, update_time)
+        values (#{userId}, #{bookId}, #{bookNumber}, #{cartItemStatus}, #{deleteFlag}, #{createTime}, #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="cartItemId" useGeneratedKeys="true">
-        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, delete_flag, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.createTime},
-            #{entity.updataTime})
+            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.deleteFlag},
+            #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="cartItemId" useGeneratedKeys="true">
-        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, delete_flag, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.createTime},
-            #{entity.updataTime})
+            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.deleteFlag},
+            #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
         user_id = values(user_id),
         book_id = values(book_id),
         book_number = values(book_number),
         cart_item_status = values(cart_item_status),
+        delete_flag = values(delete_flag),
         create_time = values(create_time),
-        updata_time = values(updata_time)
+        update_time = values(update_time)
     </insert>
 
     <!--通过主键修改数据-->
@@ -112,11 +119,14 @@
             <if test="cartItemStatus != null">
                 cart_item_status = #{cartItemStatus},
             </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime},
             </if>
-            <if test="updataTime != null">
-                updata_time = #{updataTime},
+            <if test="updateTime != null">
+                update_time = #{updateTime},
             </if>
         </set>
         where cart_item_id = #{cartItemId}
