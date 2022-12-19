@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknown.bookstoreserver.mvc.mapper.CartItemMapper">
+
+    <resultMap type="com.guet_unknown.bookstoreserver.mvc.domain.CartItem" id="CartItemMap">
+        <result property="cartItemId" column="cart_item_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="bookNumber" column="book_number" jdbcType="INTEGER"/>
+        <result property="cartItemStatus" column="cart_item_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updataTime" column="updata_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CartItemMap">
+        select cart_item_id,
+               user_id,
+               book_id,
+               book_number,
+               cart_item_status,
+               create_time,
+               updata_time
+        from cart_item
+        where cart_item_id = #{cartItemId}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="CartItemMap">
+        select *
+        from cart_item
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from cart_item
+        <where>
+            <if test="cartItemId != null">
+                and cart_item_id = #{cartItemId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookNumber != null">
+                and book_number = #{bookNumber}
+            </if>
+            <if test="cartItemStatus != null">
+                and cart_item_status = #{cartItemStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updataTime != null">
+                and updata_time = #{updataTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByUserId" resultMap="CartItemMap">
+        select *
+        from cart_item
+        where user_id = #{userId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="cartItemId" useGeneratedKeys="true">
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
+        values (#{userId}, #{bookId}, #{bookNumber}, #{cartItemStatus}, #{createTime}, #{updataTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="cartItemId" useGeneratedKeys="true">
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.createTime},
+            #{entity.updataTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="cartItemId" useGeneratedKeys="true">
+        insert into cart_item(user_id, book_id, book_number, cart_item_status, create_time, updata_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.bookId}, #{entity.bookNumber}, #{entity.cartItemStatus}, #{entity.createTime},
+            #{entity.updataTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        book_id = values(book_id),
+        book_number = values(book_number),
+        cart_item_status = values(cart_item_status),
+        create_time = values(create_time),
+        updata_time = values(updata_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cart_item
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="bookId != null">
+                book_id = #{bookId},
+            </if>
+            <if test="bookNumber != null">
+                book_number = #{bookNumber},
+            </if>
+            <if test="cartItemStatus != null">
+                cart_item_status = #{cartItemStatus},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updataTime != null">
+                updata_time = #{updataTime},
+            </if>
+        </set>
+        where cart_item_id = #{cartItemId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from cart_item
+        where cart_item_id = #{cartItemId}
+    </delete>
+
+</mapper>
+
+
+
