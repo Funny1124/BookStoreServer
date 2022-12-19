@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknown.bookstoreserver.mvc.mapper.UserCouponMapper">
+
+    <resultMap type="com.guet_unknown.bookstoreserver.mvc.domain.UserCoupon" id="UserCouponMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="couponId" column="coupon_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserCouponMap">
+        select id,
+               coupon_id,
+               user_id,
+               delete_flag,
+               create_time,
+               update_time
+        from user_coupon
+        where id = #{id}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="UserCouponMap">
+        select *
+        from user_coupon
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from user_coupon
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="couponId != null">
+                and coupon_id = #{couponId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag = #{deleteFlag}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryByUserId" resultMap="UserCouponMap">
+        SELECT *
+        FROM user_coupon
+        WHERE user_id = #{userId}
+          AND delete_flag = 0;
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user_coupon(coupon_id, user_id, delete_flag, create_time, update_time)
+        values (#{couponId}, #{userId}, #{deleteFlag}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user_coupon(coupon_id, user_id, delete_flag, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.couponId}, #{entity.userId}, #{entity.deleteFlag}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user_coupon(coupon_id, user_id, delete_flag, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.couponId}, #{entity.userId}, #{entity.deleteFlag}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        coupon_id = values(coupon_id),
+        user_id = values(user_id),
+        delete_flag = values(delete_flag),
+        create_time = values(create_time),
+        update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user_coupon
+        <set>
+            <if test="couponId != null">
+                coupon_id = #{couponId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from user_coupon
+        where id = #{id}
+    </delete>
+
+</mapper>
+
+
+
