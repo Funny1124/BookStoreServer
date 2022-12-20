@@ -5,6 +5,8 @@
     <resultMap type="com.guet_unknown.bookstoreserver.mvc.domain.Address" id="AddressMap">
         <result property="addressId" column="address_id" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="addressProvince" column="address_province" jdbcType="VARCHAR"/>
         <result property="addressCity" column="address_city" jdbcType="VARCHAR"/>
         <result property="addressDetail" column="address_detail" jdbcType="VARCHAR"/>
@@ -16,6 +18,8 @@
     <select id="queryById" resultMap="AddressMap">
         select address_id,
                user_id,
+               name,
+               phone,
                address_province,
                address_city,
                address_detail,
@@ -42,6 +46,12 @@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
             <if test="addressProvince != null and addressProvince != ''">
                 and address_province = #{addressProvince}
             </if>
@@ -62,28 +72,34 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, address_province, address_city, address_detail, create_time, update_time)
-        values (#{userId}, #{addressProvince}, #{addressCity}, #{addressDetail}, #{createTime}, #{updateTime})
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
+                            update_time)
+        values (#{userId}, #{name}, #{phone}, #{addressProvince}, #{addressCity}, #{addressDetail}, #{createTime},
+                #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, address_province, address_city, address_detail, create_time, update_time)
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
+        update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.addressProvince}, #{entity.addressCity}, #{entity.addressDetail},
-            #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.name}, #{entity.phone}, #{entity.addressProvince}, #{entity.addressCity},
+            #{entity.addressDetail}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, address_province, address_city, address_detail, create_time, update_time)
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
+        update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.addressProvince}, #{entity.addressCity}, #{entity.addressDetail},
-            #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.name}, #{entity.phone}, #{entity.addressProvince}, #{entity.addressCity},
+            #{entity.addressDetail}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
         user_id = values(user_id),
+        name = values(name),
+        phone = values(phone),
         address_province = values(address_province),
         address_city = values(address_city),
         address_detail = values(address_detail),
@@ -97,6 +113,12 @@
         <set>
             <if test="userId != null">
                 user_id = #{userId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
             </if>
             <if test="addressProvince != null and addressProvince != ''">
                 address_province = #{addressProvince},

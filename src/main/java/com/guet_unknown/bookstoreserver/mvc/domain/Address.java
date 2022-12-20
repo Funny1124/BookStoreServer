@@ -14,7 +14,7 @@ import java.util.Date;
  * (Address)实体类
  *
  * @author cyan
- * @since 2022-12-19 22:27:30
+ * @since 2022-12-20 20:04:28
  */
 @Slf4j
 @Data
@@ -22,7 +22,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ApiModel("(Address)实体类")
 public class Address implements Serializable {
-    private static final long serialVersionUID = -26459991025643447L;
+    private static final long serialVersionUID = -13624976183304074L;
     @ApiModelProperty(value = "")
     private Long addressId;
     /**
@@ -30,6 +30,10 @@ public class Address implements Serializable {
      */
     @ApiModelProperty(value = "外键，用户id")
     private Long userId;
+    @ApiModelProperty(value = "")
+    private String name;
+    @ApiModelProperty(value = "")
+    private String phone;
     /**
      * 省
      */
