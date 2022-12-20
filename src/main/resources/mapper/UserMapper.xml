@@ -10,7 +10,7 @@
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
-        <result property="coupons" column="coupons" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -24,7 +24,7 @@
                avatar,
                phone,
                email,
-               coupons,
+               role,
                create_time,
                update_time
         from user
@@ -63,8 +63,8 @@
             <if test="email != null and email != ''">
                 and email = #{email}
             </if>
-            <if test="coupons != null and coupons != ''">
-                and coupons = #{coupons}
+            <if test="role != null">
+                and role = #{role}
             </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
@@ -74,32 +74,29 @@
             </if>
         </where>
     </select>
-    <select id="queryByUserName" resultMap="UserMap">
-        select * from user where user_name = #{userName}
-    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(user_name, password, nick_name, avatar, phone, email, coupons, create_time, update_time)
-        values (#{userName}, #{password}, #{nickName}, #{avatar}, #{phone}, #{email}, #{coupons}, #{createTime},
+        insert into user(user_name, password, nick_name, avatar, phone, email, role, create_time, update_time)
+        values (#{userName}, #{password}, #{nickName}, #{avatar}, #{phone}, #{email}, #{role}, #{createTime},
                 #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(user_name, password, nick_name, avatar, phone, email, coupons, create_time, update_time)
+        insert into user(user_name, password, nick_name, avatar, phone, email, role, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userName}, #{entity.password}, #{entity.nickName}, #{entity.avatar}, #{entity.phone},
-            #{entity.email}, #{entity.coupons}, #{entity.createTime}, #{entity.updateTime})
+            #{entity.email}, #{entity.role}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(user_name, password, nick_name, avatar, phone, email, coupons, create_time, update_time)
+        insert into user(user_name, password, nick_name, avatar, phone, email, role, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userName}, #{entity.password}, #{entity.nickName}, #{entity.avatar}, #{entity.phone},
-            #{entity.email}, #{entity.coupons}, #{entity.createTime}, #{entity.updateTime})
+            #{entity.email}, #{entity.role}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
         user_name = values(user_name),
@@ -108,7 +105,7 @@
         avatar = values(avatar),
         phone = values(phone),
         email = values(email),
-        coupons = values(coupons),
+        role = values(role),
         create_time = values(create_time),
         update_time = values(update_time)
     </insert>
@@ -135,8 +132,8 @@
             <if test="email != null and email != ''">
                 email = #{email},
             </if>
-            <if test="coupons != null and coupons != ''">
-                coupons = #{coupons},
+            <if test="role != null">
+                role = #{role},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},

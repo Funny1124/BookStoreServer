@@ -14,7 +14,7 @@ import java.util.Date;
  * (User)实体类
  *
  * @author cyan
- * @since 2022-12-17 15:44:19
+ * @since 2022-12-20 14:33:40
  */
 @Slf4j
 @Data
@@ -22,23 +22,47 @@ import java.util.Date;
 @NoArgsConstructor
 @ApiModel("(User)实体类")
 public class User implements Serializable {
-    private static final long serialVersionUID = -26364255411151392L;
-    @ApiModelProperty(value = "")
+    private static final long serialVersionUID = 245311741247008071L;
+    /**
+     * 用户id
+     */
+    @ApiModelProperty(value = "用户id")
     private Long userId;
-    @ApiModelProperty(value = "")
+    /**
+     * 用于登录的用户名
+     */
+    @ApiModelProperty(value = "用于登录的用户名")
     private String userName;
-    @ApiModelProperty(value = "")
+    /**
+     * 密码
+     */
+    @ApiModelProperty(value = "密码")
     private String password;
-    @ApiModelProperty(value = "")
+    /**
+     * 昵称
+     */
+    @ApiModelProperty(value = "昵称")
     private String nickName;
-    @ApiModelProperty(value = "")
+    /**
+     * 头像地址
+     */
+    @ApiModelProperty(value = "头像地址")
     private String avatar;
-    @ApiModelProperty(value = "")
+    /**
+     * 手机
+     */
+    @ApiModelProperty(value = "手机")
     private String phone;
-    @ApiModelProperty(value = "")
+    /**
+     * 邮箱
+     */
+    @ApiModelProperty(value = "邮箱")
     private String email;
-    @ApiModelProperty(value = "")
-    private String coupons;
+    /**
+     * 0普通用户，1管理员
+     */
+    @ApiModelProperty(value = "0普通用户，1管理员")
+    private Integer role;
     @ApiModelProperty(value = "")
     private Date createTime;
     @ApiModelProperty(value = "")
