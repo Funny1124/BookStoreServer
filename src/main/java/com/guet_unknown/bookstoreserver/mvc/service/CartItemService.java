@@ -33,6 +33,9 @@ public interface CartItemService {
      * @return 完整购物车
      */
     R queryByUserId(Long userId);
+
+    R queryByUserId2(Long userId);
+
     /**
      * 查询所有
      *

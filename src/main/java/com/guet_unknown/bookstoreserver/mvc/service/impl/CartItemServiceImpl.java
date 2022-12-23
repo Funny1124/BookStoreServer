@@ -1,5 +1,7 @@
 package com.guet_unknown.bookstoreserver.mvc.service.impl;
 
+import com.guet_unknown.bookstoreserver.mvc.domain.RCartItem;
+import com.guet_unknown.bookstoreserver.mvc.mapper.BooksMapper;
 import lombok.extern.slf4j.Slf4j;
 import com.guet_unknown.bookstoreserver.mvc.domain.CartItem;
 import com.guet_unknown.bookstoreserver.mvc.mapper.CartItemMapper;
@@ -10,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +26,8 @@ import java.util.List;
 public class CartItemServiceImpl implements CartItemService {
     @Resource
     private CartItemMapper cartItemMapper;
-
+    @Resource
+    private BooksMapper booksMapper;
     /**
      * 分页查询
      *
@@ -57,6 +61,31 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public R queryByUserId(Long userId){
         return R.success().setData(this.cartItemMapper.queryByUserId(userId));
+    }
+
+    /**
+     * 通过userId用户名查询购物车item
+     * @param userId 用户名
+     * @return 完整购物车
+     */
+    @Override
+    public R queryByUserId2(Long userId){
+        List<RCartItem> rCartItems = new ArrayList<>();
+        List<CartItem> cartItems = this.cartItemMapper.queryByUserId(userId);
+        for (int i = 0; i < cartItems.size(); i++) {
+            RCartItem rCartItem = new RCartItem();
+            rCartItem.setCartItemId(cartItems.get(i).getCartItemId());
+            rCartItem.setUserId(cartItems.get(i).getUserId());
+            rCartItem.setBookId(cartItems.get(i).getBookId());
+            rCartItem.setBooks(this.booksMapper.queryById(rCartItem.getBookId()));
+            rCartItem.setBookNumber(cartItems.get(i).getBookNumber());
+            rCartItem.setCartItemStatus(cartItems.get(i).getCartItemStatus());
+            rCartItem.setDeleteFlag(cartItems.get(i).getDeleteFlag());
+            rCartItem.setCreateTime(cartItems.get(i).getCreateTime());
+            rCartItem.setUpdateTime(cartItems.get(i).getUpdateTime());
+            rCartItems.add(rCartItem);
+        }
+        return R.success().setData(rCartItems);
     }
     /**
      * 查询所有

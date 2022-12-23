@@ -75,6 +75,16 @@ public class CartItemController {
         return this.cartItemService.queryByUserId(userId);
     }
     /**
+     * 通过userId用户名查询-完整版
+     * @param userId 用户名
+     * @return 完整购物车
+     */
+    @ApiOperation("通过userId用户名查询-完整版")
+    @GetMapping(value = "queryByUserId2")
+    public R queryByUserId2(@ApiParam(value = "userId用户名") @RequestParam("userId") Long userId) {
+        return this.cartItemService.queryByUserId2(userId);
+    }
+    /**
      * 新增数据
      *
      * @param cartItem 实体
