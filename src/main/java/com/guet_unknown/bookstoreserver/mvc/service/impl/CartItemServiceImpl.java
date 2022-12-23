@@ -54,6 +54,29 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     /**
+     * 通过ID查询单条数据
+     *
+     * @param cartItemId 主键
+     * @return 实例对象
+     */
+    @Override
+    public R queryById2(Long cartItemId) {
+        CartItem cartItem = this.cartItemMapper.queryById(cartItemId);
+        RCartItem rCartItem = new RCartItem();
+        rCartItem.setCartItemId(cartItem.getCartItemId());
+        rCartItem.setUserId(cartItem.getUserId());
+        rCartItem.setBookId(cartItem.getBookId());
+        rCartItem.setBooks(this.booksMapper.queryById(rCartItem.getBookId()));
+        rCartItem.setBookNumber(cartItem.getBookNumber());
+        rCartItem.setCartItemStatus(cartItem.getCartItemStatus());
+        rCartItem.setDeleteFlag(cartItem.getDeleteFlag());
+        rCartItem.setCreateTime(cartItem.getCreateTime());
+        rCartItem.setUpdateTime(cartItem.getUpdateTime());
+        return R.success().setData(rCartItem);
+    }
+
+
+    /**
      * 通过userId用户名查询购物车item
      * @param userId 用户名
      * @return 完整购物车

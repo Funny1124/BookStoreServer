@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet_unknown.bookstoreserver.mvc.mapper.OrderItemMapper">
+
+    <resultMap type="com.guet_unknown.bookstoreserver.mvc.domain.OrderItem" id="OrderItemMap">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="cartItems" column="cart_items" jdbcType="VARCHAR"/>
+        <result property="orderTotalPrice" column="order_total_price" jdbcType="NUMERIC"/>
+        <result property="orderPay" column="order_pay" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderItemMap">
+        select order_id,
+               user_id,
+               cart_items,
+               order_total_price,
+               order_pay,
+               create_time,
+               update_time
+        from order_item
+        where order_id = #{orderId}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryByUserId" resultMap="OrderItemMap">
+        select *
+        from order_item where user_id = #{userId}
+    </select>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="OrderItemMap">
+        select *
+        from order_item
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from order_item
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="cartItems != null and cartItems != ''">
+                and cart_items = #{cartItems}
+            </if>
+            <if test="orderTotalPrice != null">
+                and order_total_price = #{orderTotalPrice}
+            </if>
+            <if test="orderPay != null">
+                and order_pay = #{orderPay}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
+        values (#{userId}, #{cartItems}, #{orderTotalPrice}, #{orderPay}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.createTime},
+            #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.createTime},
+            #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        cart_items = values(cart_items),
+        order_total_price = values(order_total_price),
+        order_pay = values(order_pay),
+        create_time = values(create_time),
+        update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update order_item
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="cartItems != null and cartItems != ''">
+                cart_items = #{cartItems},
+            </if>
+            <if test="orderTotalPrice != null">
+                order_total_price = #{orderTotalPrice},
+            </if>
+            <if test="orderPay != null">
+                order_pay = #{orderPay},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from order_item
+        where order_id = #{orderId}
+    </delete>
+
+</mapper>
+
+
+

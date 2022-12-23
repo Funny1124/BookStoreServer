@@ -1,15 +1,15 @@
 package com.guet_unknown.bookstoreserver.mvc.service;
 
-import com.guet_unknown.bookstoreserver.mvc.domain.CartItem;
+import com.guet_unknown.bookstoreserver.mvc.domain.OrderItem;
 import com.guet_unknown.bookstoreserver.util.R;
 
 /**
- * (CartItem)表服务接口
+ * (OrderItem)表服务接口
  *
  * @author cyan
- * @since 2022-12-19 16:54:22
+ * @since 2022-12-23 17:10:55
  */
-public interface CartItemService {
+public interface OrderItemService {
 
     /**
      * 分页查询
@@ -23,21 +23,12 @@ public interface CartItemService {
     /**
      * 通过ID查询单条数据
      *
-     * @param cartItemId 主键
+     * @param orderId 主键
      * @return 实例对象
      */
-    R queryById(Long cartItemId);
+    R queryById(Long orderId);
 
-    R queryById2(Long cartItemId);
-
-    /**
-     * 通过userId用户名查询购物车item
-     * @param userId 用户名
-     * @return 完整购物车
-     */
     R queryByUserId(Long userId);
-
-    R queryByUserId2(Long userId);
 
     /**
      * 查询所有
@@ -49,26 +40,26 @@ public interface CartItemService {
     /**
      * 新增数据
      *
-     * @param cartItem 实例对象
+     * @param orderItem 实例对象
      * @return 实例对象
      */
-    R insert(CartItem cartItem);
+    R insert(OrderItem orderItem);
 
     /**
      * 修改数据
      *
-     * @param cartItem 实例对象
+     * @param orderItem 实例对象
      * @return 实例对象
      */
-    R update(CartItem cartItem);
+    R update(OrderItem orderItem);
 
     /**
      * 通过主键删除数据
      *
-     * @param cartItemId 主键
+     * @param orderId 主键
      * @return 是否成功
      */
-    R deleteById(Long cartItemId);
+    R deleteById(Long orderId);
 
 }
 
