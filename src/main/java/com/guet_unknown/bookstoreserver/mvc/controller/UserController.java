@@ -84,7 +84,7 @@ public class UserController {
      * @return 实例User
      */
     @ApiOperation("用户登录")
-    @PostMapping(value = "login")
+    @GetMapping (value = "login")
     public R login(String username, String password) {
         return this.userService.login(username, password);
     }

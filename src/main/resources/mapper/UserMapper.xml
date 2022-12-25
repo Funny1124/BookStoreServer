@@ -74,6 +74,9 @@
             </if>
         </where>
     </select>
+    <select id="queryByUserName" resultMap="UserMap">
+        select * from user where user_name = #{username}
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
