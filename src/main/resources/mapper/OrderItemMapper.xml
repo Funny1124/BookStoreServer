@@ -8,6 +8,11 @@
         <result property="cartItems" column="cart_items" jdbcType="VARCHAR"/>
         <result property="orderTotalPrice" column="order_total_price" jdbcType="NUMERIC"/>
         <result property="orderPay" column="order_pay" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="receiveStatus" column="receive_status" jdbcType="INTEGER"/>
+        <result property="receiveName" column="receive_name" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -19,18 +24,22 @@
                cart_items,
                order_total_price,
                order_pay,
+               name,
+               phone,
+               address,
+               receive_status,
+               receive_name,
                create_time,
                update_time
         from order_item
         where order_id = #{orderId}
     </select>
-
-    <!--查询所有-->
+    <!--用户id查询所有-->
     <select id="queryByUserId" resultMap="OrderItemMap">
         select *
-        from order_item where user_id = #{userId}
+        from order_item
+        where user_id = #{userId}
     </select>
-
     <!--查询所有-->
     <select id="queryAll" resultMap="OrderItemMap">
         select *
@@ -57,6 +66,21 @@
             <if test="orderPay != null">
                 and order_pay = #{orderPay}
             </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="receiveStatus != null">
+                and receive_status = #{receiveStatus}
+            </if>
+            <if test="receiveName != null and receiveName != ''">
+                and receive_name = #{receiveName}
+            </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
             </if>
@@ -68,24 +92,30 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
-        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
-        values (#{userId}, #{cartItems}, #{orderTotalPrice}, #{orderPay}, #{createTime}, #{updateTime})
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, name, phone, address, receive_status,
+                               receive_name, create_time, update_time)
+        values (#{userId}, #{cartItems}, #{orderTotalPrice}, #{orderPay}, #{name}, #{phone}, #{address},
+                #{receiveStatus}, #{receiveName}, #{createTime}, #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="orderId" useGeneratedKeys="true">
-        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, name, phone, address, receive_status,
+        receive_name, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.createTime},
+            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.name},
+            #{entity.phone}, #{entity.address}, #{entity.receiveStatus}, #{entity.receiveName}, #{entity.createTime},
             #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
-        insert into order_item(user_id, cart_items, order_total_price, order_pay, create_time, update_time)
+        insert into order_item(user_id, cart_items, order_total_price, order_pay, name, phone, address, receive_status,
+        receive_name, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.createTime},
+            (#{entity.userId}, #{entity.cartItems}, #{entity.orderTotalPrice}, #{entity.orderPay}, #{entity.name},
+            #{entity.phone}, #{entity.address}, #{entity.receiveStatus}, #{entity.receiveName}, #{entity.createTime},
             #{entity.updateTime})
         </foreach>
         on duplicate key update
@@ -93,6 +123,11 @@
         cart_items = values(cart_items),
         order_total_price = values(order_total_price),
         order_pay = values(order_pay),
+        name = values(name),
+        phone = values(phone),
+        address = values(address),
+        receive_status = values(receive_status),
+        receive_name = values(receive_name),
         create_time = values(create_time),
         update_time = values(update_time)
     </insert>
@@ -112,6 +147,21 @@
             </if>
             <if test="orderPay != null">
                 order_pay = #{orderPay},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="receiveStatus != null">
+                receive_status = #{receiveStatus},
+            </if>
+            <if test="receiveName != null and receiveName != ''">
+                receive_name = #{receiveName},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},
