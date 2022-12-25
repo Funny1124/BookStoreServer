@@ -49,6 +49,12 @@ public class AddressServiceImpl implements AddressService {
         return R.success().setData(this.addressMapper.queryById(addressId));
     }
 
+    @Override
+    public R queryByUserId(Long userId) {
+        return R.success().setData(this.addressMapper.queryByUserId(userId));
+    }
+
+
     /**
      * 查询所有
      *

@@ -65,6 +65,17 @@ public class AddressController {
     }
 
     /**
+     * 通过用户ID查询所有数据
+     *
+     * @param userId 用户id
+     * @return 实例对象
+     */
+    @ApiOperation("通过用户ID查询所有地址")
+    @GetMapping(value = "queryByUserId")
+    public R queryByUserId(@ApiParam(value = "userId 用户id") @RequestParam("userId") Long userId) {
+        return this.addressService.queryByUserId(userId);
+    }
+    /**
      * 新增数据
      *
      * @param address 实体

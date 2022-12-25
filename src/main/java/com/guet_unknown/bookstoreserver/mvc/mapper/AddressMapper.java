@@ -1,6 +1,7 @@
 package com.guet_unknown.bookstoreserver.mvc.mapper;
 
 import com.guet_unknown.bookstoreserver.mvc.domain.Address;
+import com.guet_unknown.bookstoreserver.mvc.domain.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,6 +23,13 @@ public interface AddressMapper {
      * @return 实例对象
      */
     Address queryById(Long addressId);
+    /**
+     * 通过用户ID查询所有数据
+     *
+     * @param userId 用户
+     * @return 实例对象列表
+     */
+    List<Address> queryByUserId(Long userId);
 
     /**
      * 查询所有

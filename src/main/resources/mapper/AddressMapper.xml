@@ -69,6 +69,11 @@
             </if>
         </where>
     </select>
+    <select id="queryByUserId" resultMap="AddressMap">
+        select *
+        from address
+        where user_id = #{userId}
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="addressId" useGeneratedKeys="true">

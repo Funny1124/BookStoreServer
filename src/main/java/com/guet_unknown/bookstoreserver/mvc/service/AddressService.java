@@ -27,6 +27,7 @@ public interface AddressService {
      * @return 实例对象
      */
     R queryById(Long addressId);
+    R queryByUserId(Long userId);
 
     /**
      * 查询所有
