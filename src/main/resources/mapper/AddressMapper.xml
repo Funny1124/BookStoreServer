@@ -10,6 +10,7 @@
         <result property="addressProvince" column="address_province" jdbcType="VARCHAR"/>
         <result property="addressCity" column="address_city" jdbcType="VARCHAR"/>
         <result property="addressDetail" column="address_detail" jdbcType="VARCHAR"/>
+        <result property="isDefault" column="is_default" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -23,6 +24,7 @@
                address_province,
                address_city,
                address_detail,
+               is_default,
                create_time,
                update_time
         from address
@@ -61,6 +63,9 @@
             <if test="addressDetail != null and addressDetail != ''">
                 and address_detail = #{addressDetail}
             </if>
+            <if test="isDefault != null">
+                and is_default = #{isDefault}
+            </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
             </if>
@@ -74,32 +79,31 @@
         from address
         where user_id = #{userId}
     </select>
-
     <!--新增所有列-->
     <insert id="insert" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
-                            update_time)
-        values (#{userId}, #{name}, #{phone}, #{addressProvince}, #{addressCity}, #{addressDetail}, #{createTime},
-                #{updateTime})
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, is_default,
+                            create_time, update_time)
+        values (#{userId}, #{name}, #{phone}, #{addressProvince}, #{addressCity}, #{addressDetail}, #{isDefault},
+                #{createTime}, #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
-        update_time)
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, is_default,
+        create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.name}, #{entity.phone}, #{entity.addressProvince}, #{entity.addressCity},
-            #{entity.addressDetail}, #{entity.createTime}, #{entity.updateTime})
+            #{entity.addressDetail}, #{entity.isDefault}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="addressId" useGeneratedKeys="true">
-        insert into address(user_id, name, phone, address_province, address_city, address_detail, create_time,
-        update_time)
+        insert into address(user_id, name, phone, address_province, address_city, address_detail, is_default,
+        create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.name}, #{entity.phone}, #{entity.addressProvince}, #{entity.addressCity},
-            #{entity.addressDetail}, #{entity.createTime}, #{entity.updateTime})
+            #{entity.addressDetail}, #{entity.isDefault}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
         user_id = values(user_id),
@@ -108,6 +112,7 @@
         address_province = values(address_province),
         address_city = values(address_city),
         address_detail = values(address_detail),
+        is_default = values(is_default),
         create_time = values(create_time),
         update_time = values(update_time)
     </insert>
@@ -133,6 +138,9 @@
             </if>
             <if test="addressDetail != null and addressDetail != ''">
                 address_detail = #{addressDetail},
+            </if>
+            <if test="isDefault != null">
+                is_default = #{isDefault},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},
